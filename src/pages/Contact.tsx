@@ -39,6 +39,7 @@ const Contact = () => {
     }
   };
 
+  /*
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -57,8 +58,66 @@ const Contact = () => {
       setIsSubmitting(false);
       return;
     }
+      */
 
-    // Simulate form submission
+   
+
+
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  setIsSubmitting(true);
+
+  const result = contactSchema.safeParse(formData);
+
+  if (!result.success) {
+    toast({
+      title: "Please check your information",
+      description: "Make sure all fields are filled out correctly.",
+      variant: "destructive",
+    });
+    setIsSubmitting(false);
+    return;
+  }
+
+
+const endpoint = import.meta.env.VITE_FORMSPREE_ENDPOINT;
+
+try {
+  const res = await fetch(endpoint, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify(result.data), // { name, email, subject, message }
+  });
+
+  if (!res.ok) throw new Error("Form submission failed");
+
+  setIsSubmitted(true);
+  toast({
+    title: "Message sent!",
+    description: "Thank you for reaching out. I'll get back to you soon.",
+  });
+
+  // Reset form ONLY on success
+  setFormData({ name: "", email: "", subject: "", message: "" });
+  setTimeout(() => setIsSubmitted(false), 3000);
+} catch (err) {
+  toast({
+    title: "Something went wrong.",
+    description: "Please try again, or email me directly.",
+    variant: "destructive",
+  });
+} finally {
+  setIsSubmitting(false);
+}
+};
+
+
+
+/*
+    // Simulate form submission DOES NOT WORK NEED TO REPLACE 
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
     setIsSubmitting(false);
@@ -72,6 +131,8 @@ const Contact = () => {
     setFormData({ name: "", email: "", subject: "", message: "" });
     setTimeout(() => setIsSubmitted(false), 3000);
   };
+
+*/
 
   return (
     <Layout>
