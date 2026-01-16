@@ -23,7 +23,7 @@ const HeroSection = () => {
           >
             <div className="w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-[#592A8A] via-[#592A8A]/90 to-[#FEC923] p-1.5">
               <div className="w-full h-full rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center border-2 border-white/20">
-                <img src="/me.JPG" alt="Carlos Andres Ochoa" className="w-full h-full rounded-full object-cover object-top" />
+                <img src={`${import.meta.env.BASE_URL}me.JPG`} alt="Carlos Andres Ochoa" className="w-full h-full rounded-full object-cover object-top" />
                 
 
               </div>
